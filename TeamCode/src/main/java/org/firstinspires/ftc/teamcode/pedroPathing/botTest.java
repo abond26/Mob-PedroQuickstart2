@@ -24,12 +24,12 @@ public class botTest extends LinearOpMode {
 
     public void runOpMode() throws InterruptedException{
         intake = hardwareMap.get(DcMotor.class, "intake");
-        intake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        intake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         intake.setPower(0);
 
         launcher = hardwareMap.get(DcMotor.class, "launcher");
-        launcher.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        launcher.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         launcher.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         launcher.setPower(0);
 
@@ -45,8 +45,8 @@ public class botTest extends LinearOpMode {
 
         while (opModeIsActive()){
             // Reset values each loop
-            intake.setPower(0);
-            launcher.setPower(0);
+//            intake.setPower(0);
+//            launcher.setPower(0);
 
             // Drive control
             follower.setTeleOpMovementVectors(-gamepad1.left_stick_y, -gamepad1.left_stick_x, -gamepad1.right_stick_x, false);
@@ -58,6 +58,9 @@ public class botTest extends LinearOpMode {
             }
             else if (gamepad1.right_bumper){
                 intake.setPower(-1);
+            }
+            else{
+                intake.setPower(1);
             }
 
             // Servo control
@@ -72,6 +75,7 @@ public class botTest extends LinearOpMode {
 
             // Launcher control
             launcher.setPower(gamepad1.right_trigger);
+
 
             // Telemetry
             telemetry.addData("Gooner 1 pos:", goonerOne.getPosition());
