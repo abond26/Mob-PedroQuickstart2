@@ -11,18 +11,113 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
+
+// this one is new
+
+//import com.qualcomm.robotcore.util.ElapsedTime;
+
+
+
 import org.firstinspires.ftc.teamcode.pedroPathing.constants.FConstants;
 import org.firstinspires.ftc.teamcode.pedroPathing.constants.LConstants;
 
 @Config
 @TeleOp
+
+
+
 public class OneDriver extends LinearOpMode {
+
+    // These should be here at class level
+    // private ElapsedTime motorTimer = new ElapsedTime();
+    // private boolean motorRunning = false;
+
+    // Your methods go below
+    // public void someMethod() {
+    // method code
+    // }
+
+
+
+    //new
+    private DcMotor motor1;
+
+    private Servo servo1;
+    //end
     private Follower follower;
     private final Pose startPose = new Pose(0, 0, 0);
     private DcMotor intake1, intake2, launcher;
     private Servo gooner;
 
+    @Override
+
     public void runOpMode() throws InterruptedException{
+//new
+        motor1=hardwareMap.get(DcMotor.class,"motor1");
+        servo1=hardwareMap.get(Servo.class,"servo1");
+
+
+        //change stops
+        // waitForStart();
+        while (opModeIsActive()) {
+
+            if (gamepad1.a){
+                motor1.setPower(1.0);
+                telemetry.addLine("Motor started");
+                telemetry.update();
+            }
+
+            sleep(1000);
+            while (opModeIsActive()) {
+
+                if (gamepad1.a){
+                    motor1.setPower(1.0);
+                    telemetry.addLine("Motor started");
+                    telemetry.update();
+                }
+
+                // private ElapsedTime motorTimer = new ElapsedTime();
+                // private boolean motorRunning = false;
+
+// In your loop:
+                //  if (gamepad1.a && !motorRunning) {
+                //     motor1.setPower(1.0);
+                //     motorRunning = true;
+                //     motorTimer.reset();
+                //     telemetry.addLine("Motor started");
+                //  }
+
+                // if (motorRunning && motorTimer.seconds() >= 1.0) {
+                //    motor1.setPower(0);
+                //   servo1.setPosition(1.0);
+                //   motorRunning = false;
+                //   telemetry.addLine("Motor stopped");
+                // }
+
+                telemetry.update();
+
+
+
+                motor1.setPower(0);
+                servo1.setPosition(1.0);
+                telemetry.addLine("Motor stopped, servo moved ");
+                telemetry.update();
+
+            }
+
+            motor1.setPower(0);
+            servo1.setPosition(1.0);
+            telemetry.addLine("Motor stopped, servo moved ");
+            telemetry.update();
+
+        }
+
+
+//end of line
+
+
+
+
         intake1 = hardwareMap.get(DcMotor.class, "intake1");
         intake1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         intake1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);

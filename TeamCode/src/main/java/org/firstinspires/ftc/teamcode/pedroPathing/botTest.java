@@ -20,7 +20,7 @@ public class botTest extends LinearOpMode {
     private Follower follower;
     private final Pose startPose = new Pose(0, 0, 0);
     private DcMotor intake, launcher;
-    private Servo goonerOne; //goonerTwo;
+    private Servo flicker;
 
     public void runOpMode() throws InterruptedException{
         intake = hardwareMap.get(DcMotor.class, "intake");
@@ -33,8 +33,9 @@ public class botTest extends LinearOpMode {
         launcher.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         launcher.setPower(0);
 
-        goonerOne = hardwareMap.get(Servo.class, "goonerOne");
-        //goonerTwo = hardwareMap.get(Servo.class, "goonerTwo");
+        flicker = hardwareMap.get(Servo.class, "flicker");
+        flicker.setPosition(1);
+            //flickerTwo = hardwareMap.get(Servo.class, "flickerTwo");
 
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         follower = new Follower(hardwareMap, FConstants.class, LConstants.class);
@@ -60,26 +61,27 @@ public class botTest extends LinearOpMode {
                 intake.setPower(-1);
             }
             else{
-                intake.setPower(1);
+                intake.setPower(0);
             }
 
             // Servo control
             if (gamepad1.y){
-                goonerOne.setPosition(0.2);
-                //goonerTwo.setPosition(0.2);
+                flicker.setPosition(1);
+                //flickerTwo.setPosition(0.2);
             }
             else if (gamepad1.a){
-                goonerOne.setPosition(0);
-               // goonerTwo.setPosition(0);
+                flicker.setPosition(0.95);
+               // flickerTwo.setPosition(0);
             }
 
             // Launcher control
             launcher.setPower(gamepad1.right_trigger);
 
 
+
             // Telemetry
-            telemetry.addData("Gooner 1 pos:", goonerOne.getPosition());
-           // telemetry.addData("Gooner 2 pos:", goonerTwo.getPosition());
+            telemetry.addData("Gooner 1 pos:",  flicker.getPosition());
+           // telemetry.addData("Gooner 2 pos:", flickerTwo.getPosition());
             telemetry.addData("Launcher Power:", launcher.getPower());
             telemetry.addData("Intake Power:", intake.getPower());
             telemetry.update();
