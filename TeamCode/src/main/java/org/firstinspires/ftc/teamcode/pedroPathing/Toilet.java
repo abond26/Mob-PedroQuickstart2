@@ -63,26 +63,26 @@ public class Toilet extends LinearOpMode {
             follower.update();
 
             //intake movements
-            if (gamepad1.left_bumper){
+            if (gamepad2.left_bumper){
                 intake.setPower(1);
             }
-            else if (gamepad1.right_bumper){
+            else if (gamepad2.right_bumper){
                 intake.setPower(-1);
             }
             else {
                 intake.setPower(0);
             }
             //launcher movements
-            launcher.setPower(gamepad1.right_trigger);
-            flicker.setPower(gamepad1.left_trigger);
+            launcher.setPower(gamepad2.right_trigger);
+            flicker.setPower(gamepad2.left_trigger);
 
-            if (gamepad1.dpad_left){
+            if (gamepad2.dpad_left){
                 rotator.setPower(-1);
             }
-            else if (gamepad1.dpad_right){
+            else if (gamepad2.dpad_right){
                 rotator.setPower(1);
             }
-            else {
+             else {
                 rotator.setPower(0);
             }
 
