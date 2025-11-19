@@ -57,8 +57,6 @@ public class Toilet extends LinearOpMode {
 
         while (opModeIsActive()){
             //reset values:
-            intake.setPower(0);
-            rotator.setPower(0);
 
             //bot movements
             follower.setTeleOpMovementVectors(-gamepad1.left_stick_y, -gamepad1.left_stick_x, -gamepad1.right_stick_x, false);
@@ -71,6 +69,9 @@ public class Toilet extends LinearOpMode {
             else if (gamepad1.right_bumper){
                 intake.setPower(-1);
             }
+            else {
+                intake.setPower(0);
+            }
             //launcher movements
             launcher.setPower(gamepad1.right_trigger);
             flicker.setPower(gamepad1.left_trigger);
@@ -80,6 +81,9 @@ public class Toilet extends LinearOpMode {
             }
             else if (gamepad1.dpad_right){
                 rotator.setPower(1);
+            }
+            else {
+                rotator.setPower(0);
             }
 
             telemetry.update();
