@@ -47,7 +47,7 @@ public class OneDriver extends LinearOpMode {
     private Follower follower;
     private final Pose startPose = new Pose(0, 0, 0);
     private DcMotor intake1, intake2, launcher;
-    private Servo gooner;
+    private Servo flicker;
 
     @Override
 
@@ -133,7 +133,7 @@ public class OneDriver extends LinearOpMode {
         launcher.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         launcher.setPower(0);
 
-        gooner = hardwareMap.get(Servo.class, "gooner");
+        flicker = hardwareMap.get(Servo.class, "flicker");
 
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         follower = new Follower(hardwareMap, FConstants.class, LConstants.class);
@@ -158,7 +158,7 @@ public class OneDriver extends LinearOpMode {
                 intake(-1);
             }
             launcher.setPower(gamepad1.right_trigger);
-            telemetry.addData("servo pos:", gooner.getPosition());
+            telemetry.addData("servo pos:", flicker.getPosition());
             telemetry.update();
         }
     }

@@ -5,7 +5,7 @@ import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.localization.Pose;
-
+import com.pedropathing.util.Constants;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -16,26 +16,37 @@ import org.firstinspires.ftc.teamcode.pedroPathing.constants.LConstants;
 
 @Config
 @TeleOp
-public class botTest extends LinearOpMode {
+public class Toilet extends LinearOpMode {
     private Follower follower;
     private final Pose startPose = new Pose(0, 0, 0);
-    private DcMotor intake, launcher;
-    private Servo flickerOne; //flickerTwo;
+    private DcMotor intake, launcher, flicker, rotator;
+    private DcMotor leftFront, leftRear, rightFront, rightRear;
 
     public void runOpMode() throws InterruptedException{
+        leftFront = hardwareMap.get(DcMotor.class, "leftFront");
+        leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftRear = hardwareMap.get(DcMotor.class, "leftRear");
+        leftRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightFront = hardwareMap.get(DcMotor.class, "rightFront");
+        rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightRear = hardwareMap.get(DcMotor.class, "rightRear");
+        rightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
         intake = hardwareMap.get(DcMotor.class, "intake");
-//        intake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         intake.setPower(0);
 
         launcher = hardwareMap.get(DcMotor.class, "launcher");
-//        launcher.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         launcher.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         launcher.setPower(0);
 
-        flickerOne = hardwareMap.get(Servo.class, "flicker");
-        flickerOne.setPosition(0.5);
-        //flickerTwo = hardwareMap.get(Servo.class, "flickerTwo");
+        flicker = hardwareMap.get(DcMotor.class, "flicker");
+        flicker.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        flicker.setPower(0);
+
+        rotator = hardwareMap.get(DcMotor.class, "rotator");
+        rotator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rotator.setPower(0);
 
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         follower = new Follower(hardwareMap, FConstants.class, LConstants.class);
@@ -45,50 +56,36 @@ public class botTest extends LinearOpMode {
         follower.startTeleopDrive();
 
         while (opModeIsActive()){
-            // Reset values each loop
-//            intake.setPower(0);
-//            launcher.setPower(0);
+            //reset values:
+            intake.setPower(0);
+            rotator.setPower(0);
 
-            // Drive control
+            //bot movements
             follower.setTeleOpMovementVectors(-gamepad1.left_stick_y, -gamepad1.left_stick_x, -gamepad1.right_stick_x, false);
             follower.update();
 
-            // Intake control
+            //intake movements
             if (gamepad1.left_bumper){
                 intake.setPower(1);
             }
             else if (gamepad1.right_bumper){
                 intake.setPower(-1);
             }
-            else{
-                intake.setPower(1);
-            }
-
-            // Servo control
-            if (gamepad1.y){
-                flickerOne.setPosition(0.2);
-                //flickerTwo.setPosition(0.2);
-            }
-            else if (gamepad1.a){
-                flickerOne.setPosition(0);
-               // flickerTwo.setPosition(0);
-            }
-
-            // Launcher control
+            //launcher movements
             launcher.setPower(gamepad1.right_trigger);
+            flicker.setPower(gamepad1.left_trigger);
 
+            if (gamepad1.dpad_left){
+                rotator.setPower(-1);
+            }
+            else if (gamepad1.dpad_right){
+                rotator.setPower(1);
+            }
 
-            // Telemetry
-            telemetry.addData("flicker 1 pos:", flickerOne.getPosition());
-           // telemetry.addData("flicker 2 pos:", flickerTwo.getPosition());
-            telemetry.addData("Launcher Power:", launcher.getPower());
-            telemetry.addData("Intake Power:", intake.getPower());
             telemetry.update();
         }
     }
+    //for organization. Sets both intakes' power in the same direction
 
-    // For organization. Sets intake power
-    public void intake(int direction){
-        intake.setPower(direction);
-    }
 }
+
